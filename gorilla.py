@@ -15,6 +15,9 @@ from matplotlib.figure import Figure
 # descartes 
 from descartes.patch import PolygonPatch
 
+# pillow
+from PIL import Image,ImageTk
+
 def welcome():
     print('-'*80)
     print('A gorilla game by Nachiket Gokhale gokhalen@gmail.com')
@@ -103,11 +106,27 @@ class GorillaGui():
         self.Frame01.grid(row=0,column=1); self.Frame01.grid_propagate(False)
         self.Frame11.grid(row=1,column=1); self.Frame11.grid_propagate(False)
 
+        # make grids on the frames as needed
+        self.Frame00.grid_rowconfigure(0,weight=0)
+        self.Frame00.grid_columnconfigure(0,weight=0)        
+        
+        self.Frame11.grid_rowconfigure(0,weight=0)
+        self.Frame11.grid_columnconfigure(0,weight=0)
+        
+
         # make canvas
         self.fig = Figure(figsize=(self.f00_width,self.f00_height),dpi=100)
         self.ax  = self.fig.gca()
         self.canvas = FigureCanvasTkAgg(self.fig,master=self.Frame00)
         self.canvas.get_tk_widget().grid(row=0,column=0)
+
+        # make gorilla image on lower right
+        # https://stackoverflow.com/questions/23901168/how-do-i-insert-a-jpeg-image-into-a-python-tkinter-window
+        # see Engineer_Chris' comment
+        gorilla_img = ImageTk.PhotoImage(Image.open('images/gorilla.png'))
+        label = tkinter.Label(self.Frame11, image=gorilla_img)
+        label.image = gorilla_img
+        label.grid(row=0,column=0)
 
     def gorilla_artist(self):
         # responsible for drawing on canvas
